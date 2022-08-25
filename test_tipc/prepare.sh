@@ -27,7 +27,6 @@ DATA_DIR='./test_tipc/data/'
 mkdir -p "${DATA_DIR}"
 if [[ ${MODE} == 'lite_train_lite_infer' \
     || ${MODE} == 'lite_train_whole_infer' \
-    || ${MODE} == 'whole_train_whole_infer' \
     || ${MODE} == 'whole_infer' ]]; then
 
     if [[ ${task_name} == 'cd' ]]; then

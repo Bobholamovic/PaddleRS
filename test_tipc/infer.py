@@ -13,6 +13,8 @@ from paddle.inference import PrecisionType
 from paddlers.tasks import load_model
 from paddlers.utils import logging
 
+from config_utils import parse_configs
+
 
 class _bool(object):
     def __new__(cls, x):
@@ -141,7 +143,7 @@ class TIPCPredictor(object):
         return config
 
     def preprocess(self, images, transforms):
-        preprocessed_samples = self._model._preprocess(
+        preprocessed_samples = self._model.preprocess(
             images, transforms, to_tensor=False)
         if self._model.model_type == 'classifier':
             preprocessed_samples = {'image': preprocessed_samples[0]}
@@ -167,12 +169,12 @@ class TIPCPredictor(object):
     def postprocess(self, net_outputs, topk=1, ori_shape=None, transforms=None):
         if self._model.model_type == 'classifier':
             true_topk = min(self._model.num_classes, topk)
-            if self._model._postprocess is None:
+            if self._model.postprocess is None:
                 self._model.build_postprocess_from_labels(topk)
-            # XXX: Convert ndarray to tensor as self._model._postprocess requires
+            # XXX: Convert ndarray to tensor as self._model.postprocess requires
             assert len(net_outputs) == 1
             net_outputs = paddle.to_tensor(net_outputs[0])
-            outputs = self._model._postprocess(net_outputs)
+            outputs = self._model.postprocess(net_outputs)
             class_ids = map(itemgetter('class_ids'), outputs)
             scores = map(itemgetter('scores'), outputs)
             label_names = map(itemgetter('label_names'), outputs)
@@ -182,7 +184,7 @@ class TIPCPredictor(object):
                 'label_names_map': n,
             } for l, s, n in zip(class_ids, scores, label_names)]
         elif self._model.model_type in ('segmenter', 'change_detector'):
-            label_map, score_map = self._model._postprocess(
+            label_map, score_map = self._model.postprocess(
                 net_outputs,
                 batch_origin_shape=ori_shape,
                 transforms=transforms.transforms)
@@ -195,7 +197,7 @@ class TIPCPredictor(object):
                 k: v
                 for k, v in zip(['bbox', 'bbox_num', 'mask'], net_outputs)
             }
-            preds = self._model._postprocess(net_outputs)
+            preds = self._model.postprocess(net_outputs)
         else:
             logging.error(
                 "Invalid model type {}.".format(self._model.model_type),
@@ -285,7 +287,8 @@ class TIPCPredictor(object):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--file_list', type=str, nargs=2)
+    parser.add_argument('--config', type=str)
+    parser.add_argument('--inherit_off', action='store_true')
     parser.add_argument('--model_dir', type=str, default='./')
     parser.add_argument(
         '--device', type=str, choices=['cpu', 'gpu'], default='cpu')
@@ -300,6 +303,11 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    cfg = parse_configs(args.config, not args.inherit_off)
+    eval_dataset = cfg['datasets']['eval']
+    data_dir = eval_dataset.args['data_dir']
+    file_list = eval_dataset.args['file_list']
+
     predictor = TIPCPredictor(
         args.model_dir,
         device=args.device,
@@ -310,7 +318,7 @@ if __name__ == '__main__':
         trt_precision_mode=args.precision,
         benchmark=args.benchmark)
 
-    predictor.predict(args.file_list[0], args.file_list[1])
+    predictor.predict(data_dir, file_list)
 
     if args.benchmark:
         predictor.autolog.report()
