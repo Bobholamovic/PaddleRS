@@ -22,7 +22,7 @@
 |image_restoration/lesrcnn.py | 超分辨率 | LESRCNN |
 |object_detection/faster_rcnn.py | 目标检测 | Faster R-CNN |
 |object_detection/ppyolo.py | 目标检测 | PP-YOLO |
-|object_detection/ppyolotiny.py | 目标检测 | PP-YOLO Tiny |
+|object_detection/ppyolo_tiny.py | 目标检测 | PP-YOLO Tiny |
 |object_detection/ppyolov2.py | 目标检测 | PP-YOLOv2 |
 |object_detection/yolov3.py | 目标检测 | YOLOv3 |
 |semantic_segmentation/deeplabv3p.py | 图像分割 | DeepLab V3+ |

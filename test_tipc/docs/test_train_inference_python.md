@@ -67,7 +67,7 @@ bash ./test_tipc/test_train_inference_python.sh test_tipc/configs/clas/hrnet/tra
 
 运行相应指令后，在`test_tipc/output`目录中会自动保存运行日志。如lite_train_lite_infer模式下，该目录中可能存在以下文件：
 ```
-test_tipc/output/[task name]/[model name]/
+test_tipc/output/{task name}/{model name}/
 |- results_python.log    # 存储指令执行状态的日志
 |- norm_gpus_0_autocast_null/  # GPU 0号卡上的训练日志和模型保存目录
 ......

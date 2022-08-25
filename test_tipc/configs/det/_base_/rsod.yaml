@@ -1,19 +1,19 @@
-# Basic configurations of SARShip dataset
+# Basic configurations of RSOD dataset
 
 datasets:
     train: !Node
         type: VOCDetDataset
         args: 
-            data_dir: ./test_tipc/data/sarship/
-            file_list: ./test_tipc/data/sarship/train.txt
-            label_list: ./test_tipc/data/sarship/labels.txt
+            data_dir: ./test_tipc/data/rsod/
+            file_list: ./test_tipc/data/rsod/train.txt
+            label_list: ./test_tipc/data/rsod/labels.txt
             shuffle: True
     eval: !Node
         type: VOCDetDataset
         args:
-            data_dir: ./test_tipc/data/sarship/
-            file_list: ./test_tipc/data/sarship/eval.txt
-            label_list: ./test_tipc/data/sarship/labels.txt
+            data_dir: ./test_tipc/data/rsod/
+            file_list: ./test_tipc/data/rsod/val.txt
+            label_list: ./test_tipc/data/rsod/labels.txt
             shuffle: False
 transforms:
     train:
@@ -57,8 +57,6 @@ transforms:
           type: ArrangeDetector
           args: ['eval']
 download_on: False
-download_url: https://paddlers.bj.bcebos.com/datasets/sarship.zip
-download_path: ./test_tipc/data/
 
 num_epochs: 10
 train_batch_size: 4

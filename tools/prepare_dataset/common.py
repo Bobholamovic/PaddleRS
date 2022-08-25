@@ -1,4 +1,6 @@
 import argparse
+import random
+import copy
 import os
 import os.path as osp
 from glob import glob
@@ -113,10 +115,46 @@ def create_file_list(file_list, path_tuples, sep=' '):
             f.write(line + '\n')
 
 
+def create_label_list(label_list, labels):
+    with open(label_list, 'w') as f:
+        for label in labels:
+            f.write(label + '\n')
+
+
 def link_dataset(src, dst):
     if osp.exists(dst) and not osp.isdir(dst):
         raise ValueError(f"{dst} exists and is not a directory.")
     elif not osp.exists(dst):
         os.makedirs(dst)
+    src = osp.realpath(src)
     name = osp.basename(osp.normpath(src))
     os.symlink(src, osp.join(dst, name), target_is_directory=True)
+
+
+def random_split(samples,
+                 ratios=(0.7, 0.2, 0.1),
+                 inplace=True,
+                 drop_remainder=False):
+    if not inplace:
+        samples = copy.deepcopy(samples)
+
+    if len(samples) == 0:
+        raise ValueError("There are no samples!")
+
+    random.shuffle(samples)
+
+    n_samples = len(samples)
+    acc_r = 0
+    st_idx, ed_idx = 0, 0
+    splits = []
+    for r in ratios:
+        acc_r += r
+        ed_idx = round(acc_r * n_samples)
+        splits.append(samples[st_idx:ed_idx])
+        st_idx = ed_idx
+
+    if ed_idx < len(ratios) and not drop_remainder:
+        # Append remainder to the last split
+        splits[-1].append(splits[ed_idx:])
+
+    return splits

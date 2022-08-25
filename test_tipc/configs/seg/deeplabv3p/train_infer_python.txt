@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:seg:unet
+model_name:seg:deeplabv3p
 python:python
 gpu_list:0|0,1
 use_gpu:null|null
@@ -8,7 +8,7 @@ use_gpu:null|null
 --save_dir:adaptive
 --train_batch_size:lite_train_lite_infer=4|lite_train_whole_infer=4|whole_train_whole_infer=4
 --model_path:null
---config:lite_train_lite_infer=./test_tipc/configs/seg/unet/unet_rsseg.yaml|lite_train_whole_infer=./test_tipc/configs/seg/unet/unet_rsseg.yaml|whole_train_whole_infer=./test_tipc/configs/seg/unet/unet_rsseg.yaml
+--config:lite_train_lite_infer=./test_tipc/configs/seg/deeplabv3p/deeplabv3p_rsseg.yaml|lite_train_whole_infer=./test_tipc/configs/seg/deeplabv3p/deeplabv3p_rsseg.yaml|whole_train_whole_infer=./test_tipc/configs/seg/deeplabv3p/deeplabv3p_rsseg.yaml
 train_model_name:best_model
 null:null
 ##
@@ -49,5 +49,5 @@ inference:test_tipc/infer.py
 --config:null
 --save_log_path:null
 --benchmark:True
---model_name:unet
+--model_name:deeplabv3p
 null:null
