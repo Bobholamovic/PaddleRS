@@ -17,6 +17,7 @@ PaddleRS目前已支持的全部模型如下（标注\*的为遥感专用模型�
 | 变化检测 | \*FC-EF | 是 |
 | 变化检测 | \*FC-Siam-conc | 是 |
 | 变化检测 | \*FC-Siam-diff | 是 |
+| 变化检测 | \*FCCDN | 是 |
 | 变化检测 | \*SNUNet | 是 |
 | 变化检测 | \*STANet | 是 |
 | 场景分类 | CondenseNetV2 | 是 |
