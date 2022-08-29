@@ -15,21 +15,22 @@ Linux GPU/CPU 基础训练推理测试的主程序为`test_train_inference_pytho
 |  变化检测  | DSIFN | 正常训练 | 正常训练 | IoU=72.88% |
 |  变化检测  | SNUNet | 正常训练 | 正常训练 | IoU=68.46% |
 |  变化检测  | STANet | 正常训练 | 正常训练 | IoU=65.11% |
-|  变化检测  | FC-EF | 正常训练 | 正常训练 | IoU=55.24% |
-|  变化检测  | FC-Siam-conc | 正常训练 | 正常训练 | IoU=55.71% |
-|  变化检测  | FC-Siam-diff | 正常训练 | 正常训练 | IoU=56.92% |
+|  变化检测  | FC-EF | 正常训练 | 正常训练 | IoU=64.22% |
+|  变化检测  | FC-Siam-conc | 正常训练 | 正常训练 | IoU=65.79% |
+|  变化检测  | FC-Siam-diff | 正常训练 | 正常训练 | IoU=61.23% |
+|  变化检测  | FCCDN | 正常训练 | 正常训练 | IoU=24.42% |
 |  场景分类  | HRNet | 正常训练 | 正常训练 | Acc(top1)=99.37% |
 |  场景分类  | MobileNetV3 | 正常训练 | 正常训练 | Acc(top1)=99.58% |
 |  场景分类  | ResNet50-vd | 正常训练 | 正常训练 | Acc(top1)=99.26% |
 |  目标检测  | Faster R-CNN | 正常训练 | 正常训练 | mAP=46.99% |
-|  目标检测  | PP-YOLO | 正常训练 | 正常训练 | mAP=59.94% |
-|  目标检测  | PP-YOLO Tiny | 正常训练 | 正常训练 | mAP=35.52% |
-|  目标检测  | PP-YOLOv2 | 正常训练 | 正常训练 | mAP=52.07% |
+|  目标检测  | PP-YOLO | 正常训练 | 正常训练 | mAP=56.02% |
+|  目标检测  | PP-YOLO Tiny | 正常训练 | 正常训练 | mAP=44.27% |
+|  目标检测  | PP-YOLOv2 | 正常训练 | 正常训练 | mAP=59.37% |
 |  目标检测  | YOLOv3 | 正常训练 | 正常训练 | mAP=47.33% |
-|  图像分割  | DeepLab V3+ | 正常训练 | 正常训练 | mIoU=52.02% |
-|  图像分割  | UNet | 正常训练 | 正常训练 | mIoU=58.73% |
+|  图像分割  | DeepLab V3+ | 正常训练 | 正常训练 | mIoU=56.05% |
+|  图像分割  | UNet | 正常训练 | 正常训练 | mIoU=55.50% |
 
-*注：参考预测精度为whole_train_whole_infer模式下单卡汇报的精度数据。*
+*注：参考预测精度为whole_train_whole_infer模式下单卡训练汇报的精度数据。*
 
 - 推理相关：
 
