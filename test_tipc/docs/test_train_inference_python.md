@@ -22,6 +22,9 @@ Linux GPU/CPU 基础训练推理测试的主程序为`test_train_inference_pytho
 |  场景分类  | HRNet | 正常训练 | 正常训练 | Acc(top1)=99.37% |
 |  场景分类  | MobileNetV3 | 正常训练 | 正常训练 | Acc(top1)=99.58% |
 |  场景分类  | ResNet50-vd | 正常训练 | 正常训练 | Acc(top1)=99.26% |
+|  图像复原  | DRN | 正常训练 | 正常训练 | PSNR=24.23 |
+|  图像复原  | ESRGAN | 正常训练 | 正常训练 | PSNR=21.30 |
+|  图像复原  | LESRCNN | 正常训练 | 正常训练 | PSNR=23.18 |
 |  目标检测  | Faster R-CNN | 正常训练 | 正常训练 | mAP=46.99% |
 |  目标检测  | PP-YOLO | 正常训练 | 正常训练 | mAP=56.02% |
 |  目标检测  | PP-YOLO Tiny | 正常训练 | 正常训练 | mAP=44.27% |
@@ -49,6 +52,9 @@ Linux GPU/CPU 基础训练推理测试的主程序为`test_train_inference_pytho
 |  场景分类  | HRNet | 支持 | 支持 | 1 |
 |  场景分类  | MobileNetV3 | 支持 | 支持 | 1 |
 |  场景分类  | ResNet50-vd | 支持 | 支持 | 1 |
+|  图像复原  | DRN | 支持 | 支持 | 1 |
+|  图像复原  | ESRGAN | 支持 | 支持 | 1 |
+|  图像复原  | LESRCNN | 支持 | 支持 | 1 |
 |  目标检测  | Faster R-CNN | 支持 | 支持 | 1 |
 |  目标检测  | PP-YOLO | 支持 | 支持 | 1 |
 |  目标检测  | PP-YOLO Tiny | 支持 | 支持 | 1 |
