@@ -103,7 +103,7 @@ class TIPCPredictor(object):
                     logging.warning(
                         "Semantic segmentation models do not support TensorRT acceleration, "
                         "TensorRT is forcibly disabled.")
-                elif 'RCNN' in self._model.__class__.__name__:
+                elif self._model.model_type == 'detector' and 'RCNN' in self._model.__class__.__name__:
                     logging.warning(
                         "RCNN models do not support TensorRT acceleration, "
                         "TensorRT is forcibly disabled.")
@@ -125,7 +125,7 @@ class TIPCPredictor(object):
                     )
                 else:
                     try:
-                        # Cache 10 different shapes for mkldnn to avoid memory leak
+                        # Cache 10 different shapes for mkldnn to avoid memory leak.
                         config.set_mkldnn_cache_capacity(10)
                         config.enable_mkldnn()
                         config.set_cpu_math_library_num_threads(mkl_thread_num)
@@ -160,13 +160,23 @@ class TIPCPredictor(object):
                 'image2': preprocessed_samples[1],
                 'ori_shape': preprocessed_samples[2]
             }
+        elif self._model.model_type == 'restorer':
+            preprocessed_samples = {
+                'image': preprocessed_samples[0],
+                'tar_shape': preprocessed_samples[1]
+            }
         else:
             logging.error(
                 "Invalid model type {}".format(self._model.model_type),
                 exit=True)
         return preprocessed_samples
 
-    def postprocess(self, net_outputs, topk=1, ori_shape=None, transforms=None):
+    def postprocess(self,
+                    net_outputs,
+                    topk=1,
+                    ori_shape=None,
+                    tar_shape=None,
+                    transforms=None):
         if self._model.model_type == 'classifier':
             true_topk = min(self._model.num_classes, topk)
             if self._model.postprocess is None:
@@ -198,6 +208,12 @@ class TIPCPredictor(object):
                 for k, v in zip(['bbox', 'bbox_num', 'mask'], net_outputs)
             }
             preds = self._model.postprocess(net_outputs)
+        elif self._model.model_type == 'restorer':
+            res_maps = self._model.postprocess(
+                net_outputs[0],
+                batch_tar_shape=tar_shape,
+                transforms=transforms.transforms)
+            preds = [{'res_map': res_map} for res_map in res_maps]
         else:
             logging.error(
                 "Invalid model type {}.".format(self._model.model_type),
@@ -234,6 +250,7 @@ class TIPCPredictor(object):
             net_outputs,
             topk,
             ori_shape=preprocessed_input.get('ori_shape', None),
+            tar_shape=preprocessed_input.get('tar_shape', None),
             transforms=transforms)
 
         if self.benchmark and time_it:
