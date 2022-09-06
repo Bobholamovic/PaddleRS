@@ -624,8 +624,8 @@ class BaseChangeDetector(BaseModel):
         batch_ori_shape = list()
         for im1, im2 in images:
             if isinstance(im1, str) or isinstance(im2, str):
-                im1 = decode_image(im1, to_rgb=False)
-                im2 = decode_image(im2, to_rgb=False)
+                im1 = decode_image(im1, read_raw=True)
+                im2 = decode_image(im2, read_raw=True)
             ori_shape = im1.shape[:2]
             # XXX: sample do not contain 'image_t1' and 'image_t2'.
             sample = {'image': im1, 'image2': im2}

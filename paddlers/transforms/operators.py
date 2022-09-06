@@ -179,7 +179,7 @@ class DecodeImg(Transform):
             uint8 type. Defaults to True.
         decode_bgr (bool, optional): If True, automatically interpret a non-geo image 
             (e.g., jpeg images) as a BGR image. Defaults to True.
-        decode_sar (bool, optional): If True, automatically interpret a two-channel 
+        decode_sar (bool, optional): If True, automatically interpret a single-channel 
             geo image (e.g. geotiff images) as a SAR image, set this argument to 
             True. Defaults to True.
         read_geo_info (bool, optional): If True, read geographical information from 

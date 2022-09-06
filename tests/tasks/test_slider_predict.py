@@ -35,9 +35,7 @@ class _TestSliderPredictNamespace:
                 self.model.slider_predict(self.image_path, save_dir, 256, 0,
                                           self.transforms)
                 pred1 = T.decode_image(
-                    osp.join(save_dir, self.basename),
-                    to_uint8=False,
-                    decode_sar=False)
+                    osp.join(save_dir, self.basename), read_raw=True)
                 self.check_output_equal(pred1.shape, pred_whole.shape)
 
                 # `block_size` == `overlap`
@@ -51,9 +49,7 @@ class _TestSliderPredictNamespace:
                 self.model.slider_predict(self.image_path, save_dir, (128, 32),
                                           0, self.transforms)
                 pred3 = T.decode_image(
-                    osp.join(save_dir, self.basename),
-                    to_uint8=False,
-                    decode_sar=False)
+                    osp.join(save_dir, self.basename), read_raw=True)
                 self.check_output_equal(pred3.shape, pred_whole.shape)
 
                 # `block_size` and `overlap` are both tuples
@@ -61,9 +57,7 @@ class _TestSliderPredictNamespace:
                 self.model.slider_predict(self.image_path, save_dir, (128, 100),
                                           (10, 5), self.transforms)
                 pred4 = T.decode_image(
-                    osp.join(save_dir, self.basename),
-                    to_uint8=False,
-                    decode_sar=False)
+                    osp.join(save_dir, self.basename), read_raw=True)
                 self.check_output_equal(pred4.shape, pred_whole.shape)
 
                 # `block_size` larger than image size
@@ -89,9 +83,7 @@ class _TestSliderPredictNamespace:
                     self.transforms,
                     merge_strategy='keep_first')
                 pred_keepfirst = T.decode_image(
-                    osp.join(save_dir, self.basename),
-                    to_uint8=False,
-                    decode_sar=False)
+                    osp.join(save_dir, self.basename), read_raw=True)
                 self.check_output_equal(pred_keepfirst.shape, pred_whole.shape)
 
                 # 'keep_last'
@@ -104,9 +96,7 @@ class _TestSliderPredictNamespace:
                     self.transforms,
                     merge_strategy='keep_last')
                 pred_keeplast = T.decode_image(
-                    osp.join(save_dir, self.basename),
-                    to_uint8=False,
-                    decode_sar=False)
+                    osp.join(save_dir, self.basename), read_raw=True)
                 self.check_output_equal(pred_keeplast.shape, pred_whole.shape)
 
                 # 'accum'
@@ -119,15 +109,13 @@ class _TestSliderPredictNamespace:
                     self.transforms,
                     merge_strategy='accum')
                 pred_accum = T.decode_image(
-                    osp.join(save_dir, self.basename),
-                    to_uint8=False,
-                    decode_sar=False)
+                    osp.join(save_dir, self.basename), read_raw=True)
                 self.check_output_equal(pred_accum.shape, pred_whole.shape)
 
         def test_geo_info(self):
             with tempfile.TemporaryDirectory() as td:
                 _, geo_info_in = T.decode_image(
-                    self.image_path, read_geo_info=True)
+                    self.ref_path, read_geo_info=True)
                 self.model.slider_predict(self.image_path, td, 128, 0,
                                           self.transforms)
                 _, geo_info_out = T.decode_image(
@@ -150,9 +138,7 @@ class _TestSliderPredictNamespace:
                     merge_strategy='keep_first',
                     batch_size=1)
                 pred_bs1 = T.decode_image(
-                    osp.join(save_dir, self.basename),
-                    to_uint8=False,
-                    decode_sar=False)
+                    osp.join(save_dir, self.basename), read_raw=True)
 
                 # batch_size = 4
                 save_dir = osp.join(td, 'bs4')
@@ -165,9 +151,7 @@ class _TestSliderPredictNamespace:
                     merge_strategy='keep_first',
                     batch_size=4)
                 pred_bs4 = T.decode_image(
-                    osp.join(save_dir, self.basename),
-                    to_uint8=False,
-                    decode_sar=False)
+                    osp.join(save_dir, self.basename), read_raw=True)
                 self.check_output_equal(pred_bs4, pred_bs1)
 
                 # batch_size = 8
@@ -181,9 +165,7 @@ class _TestSliderPredictNamespace:
                     merge_strategy='keep_first',
                     batch_size=8)
                 pred_bs8 = T.decode_image(
-                    osp.join(save_dir, self.basename),
-                    to_uint8=False,
-                    decode_sar=False)
+                    osp.join(save_dir, self.basename), read_raw=True)
                 self.check_output_equal(pred_bs8, pred_bs1)
 
 
@@ -195,7 +177,8 @@ class TestSegSliderPredict(_TestSliderPredictNamespace.TestSliderPredict):
             T.ArrangeSegmenter('test')
         ])
         self.image_path = "data/ssst/multispectral.tif"
-        self.basename = osp.basename(self.image_path)
+        self.ref_path = self.image_path
+        self.basename = osp.basename(self.ref_path)
 
 
 class TestCDSliderPredict(_TestSliderPredictNamespace.TestSliderPredict):
@@ -205,6 +188,7 @@ class TestCDSliderPredict(_TestSliderPredictNamespace.TestSliderPredict):
             T.DecodeImg(), T.Normalize([0.5] * 10, [0.5] * 10),
             T.ArrangeChangeDetector('test')
         ])
-        self.image_paths = ("data/ssmt/multispectral_t1.tif",
-                            "data/ssmt/multispectral_t2.tif")
-        self.basename = osp.basename(self.image_paths[0])
+        self.image_path = ("data/ssmt/multispectral_t1.tif",
+                           "data/ssmt/multispectral_t2.tif")
+        self.ref_path = self.image_path[0]
+        self.basename = osp.basename(self.ref_path)

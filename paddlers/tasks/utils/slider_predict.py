@@ -202,6 +202,13 @@ def slider_predict(predict_func, img_file, save_dir, block_size, overlap,
     height = src_data.RasterYSize
     bands = src_data.RasterCount
 
+    # XXX: GDAL read behavior conforms to paddlers.transforms.decode_image(read_raw=True)
+    # except for SAR images.
+    if bands == 1:
+        logging.warning(
+            f"Detected `bands=1`. Please note that currently `slider_predict()` does not properly handle SAR images."
+        )
+
     if block_size[0] > width or block_size[1] > height:
         raise ValueError("`block_size` should not be larger than image size.")
 

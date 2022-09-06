@@ -138,6 +138,7 @@
 |`decode_bgr`|`bool`|若为`True`，则自动将非地学格式影像（如jpeg影像）解析为BGR格式。|`True`|
 |`decode_sar`|`bool`|若为`True`，则自动将2通道的地学格式影像（如GeoTiff影像）作为SAR影像解析。|`True`|
 |`read_geo_info`|`bool`|若为`True`，则从影像中读取地理信息。|`False`|
+|`read_raw`|`bool`|若为`True`，等价于指定`to_rgb`和`to_uint8`为`False`，且该参数的优先级高于上述参数。|`False`|
 
 返回格式如下：
 
