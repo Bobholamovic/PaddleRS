@@ -275,7 +275,6 @@ def slider_predict(predict_func, img_file, save_dir, block_size, overlap,
                 # Predict
                 batch_out = predict_func(batch_data, transforms=transforms)
 
-                preds = []
                 for out, (xoff_, yoff_) in zip(batch_out, batch_offsets):
                     pred = out['label_map'].astype('uint8')
                     pred = pred[:ysize, :xsize]
@@ -292,13 +291,13 @@ def slider_predict(predict_func, img_file, save_dir, block_size, overlap,
                         prob = prob[:ysize, :xsize]
                         cache.update_block(0, xoff_, ysize, xsize, prob)
                         pred = cache.get_block(0, xoff_, ysize, xsize)
-                        if is_end_of_row:
+                        if xoff_ + xsize >= width:
                             cache.roll_cache()
 
                     # Write to file
                     band.WriteArray(pred, xoff_, yoff_)
-                    dst_data.FlushCache()
 
+                dst_data.FlushCache()
                 batch_data.clear()
                 batch_offsets.clear()
 
