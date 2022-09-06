@@ -560,7 +560,8 @@ class BaseSegmenter(BaseModel):
                        overlap=36,
                        transforms=None,
                        invalid_value=255,
-                       merge_strategy='keep_last'):
+                       merge_strategy='keep_last',
+                       batch_size=1):
         """
         Do inference using sliding windows.
 
@@ -583,10 +584,11 @@ class BaseSegmenter(BaseModel):
                 means keeping the values of the first and the last block in traversal 
                 order, respectively. 'accum' means determining the class of an overlapping 
                 pixel according to accumulated probabilities. Defaults to 'keep_last'.
+            batch_size (int, optional): Batch size used in inference. Defaults to 1.
         """
 
         slider_predict(self.predict, img_file, save_dir, block_size, overlap,
-                       transforms, invalid_value, merge_strategy)
+                       transforms, invalid_value, merge_strategy, batch_size)
 
     def preprocess(self, images, transforms, to_tensor=True):
         self._check_transforms(transforms, 'test')
