@@ -264,7 +264,7 @@ def slider_predict(predict_func, img_file, save_dir, block_size, overlap,
                                                               len_batch)
                 # While keeping `len(batch_offsets)` the number of valid elements in the batch 
 
-            if len(batch) == batch_size:
+            if len(batch_data) == batch_size:
                 # Predict
                 batch_out = predict_func(batch_data, transforms=transforms)
 
@@ -292,8 +292,8 @@ def slider_predict(predict_func, img_file, save_dir, block_size, overlap,
                     band.WriteArray(pred, xoff_, yoff_)
                     dst_data.FlushCache()
 
-                batch_data = []
-                batch_offsets = []
+                batch_data.clear()
+                batch_offsets.clear()
 
     dst_data = None
     logging.info("GeoTiff file saved in {}.".format(save_file))
