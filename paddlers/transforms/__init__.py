@@ -26,6 +26,7 @@ def decode_image(im_path,
                  decode_bgr=True,
                  decode_sar=True,
                  read_geo_info=False,
+                 use_stretch=False,
                  read_raw=False):
     """
     Decode an image.
@@ -43,6 +44,8 @@ def decode_image(im_path,
             True. Defaults to True.
         read_geo_info (bool, optional): If True, read geographical information from 
             the image. Deafults to False.
+        use_stretch (bool, optional): Whether to apply 2% linear stretch. Valid only if 
+            `to_uint8` is True. Defaults to False.
         read_raw (bool, optional): If True, equivalent to setting `to_rgb` and `to_uint8`
             to False. Setting `read_raw` takes precedence over setting `to_rgb` and 
             `to_uint8`. Defaults to False.
@@ -65,7 +68,8 @@ def decode_image(im_path,
         to_uint8=to_uint8,
         decode_bgr=decode_bgr,
         decode_sar=decode_sar,
-        read_geo_info=read_geo_info)
+        read_geo_info=read_geo_info,
+        use_stretch=use_stretch)
     # Deepcopy to avoid inplace modification
     sample = {'image': copy.deepcopy(im_path)}
     sample = decoder(sample)

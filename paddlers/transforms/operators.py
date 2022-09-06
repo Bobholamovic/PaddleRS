@@ -184,6 +184,8 @@ class DecodeImg(Transform):
             True. Defaults to True.
         read_geo_info (bool, optional): If True, read geographical information from 
             the image. Deafults to False.
+        use_stretch (bool, optional): Whether to apply 2% linear stretch. Valid only if 
+            `to_uint8` is True. Defaults to False.
     """
 
     def __init__(self,
@@ -191,13 +193,15 @@ class DecodeImg(Transform):
                  to_uint8=True,
                  decode_bgr=True,
                  decode_sar=True,
-                 read_geo_info=False):
+                 read_geo_info=False,
+                 use_stretch=False):
         super(DecodeImg, self).__init__()
         self.to_rgb = to_rgb
         self.to_uint8 = to_uint8
         self.decode_bgr = decode_bgr
         self.decode_sar = decode_sar
         self.read_geo_info = read_geo_info
+        self.use_stretch = use_stretch
 
     def read_img(self, img_path):
         img_format = imghdr.what(img_path)
@@ -264,7 +268,7 @@ class DecodeImg(Transform):
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
         if self.to_uint8:
-            image = to_uint8(image)
+            image = to_uint8(image, stretch=self.use_stretch)
 
         if self.read_geo_info:
             return image, geo_info_dict
